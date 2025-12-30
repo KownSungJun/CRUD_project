@@ -6,7 +6,7 @@
 - User : 유저 정보 관련
 - Post : 글 정보 관련
 ## 라우팅
-라우팅은 Nuxt에서 할 것이기 때문에 프론트에서는 개발용으로 페이지 스위칭 방식으로 UI 개발함
+라우팅은 NestJS에서 할 것이기 때문에 프론트에서는 개발용으로 페이지 스위칭 방식으로 UI 개발함
 ### Post
 #### Post 엔티티 구조
 ```js
@@ -39,3 +39,7 @@ const postSchema = new Schema({
 
 ## 관련 vscode extension
 https://nyol.tistory.com/88 : react styled-components 인텔리센스
+
+# server
+[api 명세서](./server/docs/api-spec.md) <br>
+[학습 내용](./server/docs/study.md)
