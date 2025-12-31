@@ -3,8 +3,7 @@ import AuthForm from "../componets/auth/AuthForm"
 const RegisterPage = () => {
     return <>
         <AuthTemplate>
-            회원가입
-            <AuthForm/>
+            <AuthForm type="register"/>
         </AuthTemplate>
     </>
 }

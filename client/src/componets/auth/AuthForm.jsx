@@ -2,6 +2,8 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import palette from "../../lib/styles/palette";
 import Button from "../common/Button";
+
+
 const AuthFormBlock = styled.div`
     h3 {
         margin: 0;
@@ -9,7 +11,9 @@ const AuthFormBlock = styled.div`
         margin-bottom: 1rem;
     }
 `;
-
+const ButtonWithMarginTop = styled(Button)`
+    margin-top: 1rem;
+`
 const StyledInput = styled.input`
     font-size: 1rem;
     border: none;
@@ -37,11 +41,16 @@ const Footer = styled.div`
         }
     }
 `
+const textMap = {
+    login: '로그인',
+    register: '회원가입',
+}
 
-const AuthForm = () => {
+const AuthForm = ({ type }) => {
+    const text = textMap[type]
     return <>
         <AuthFormBlock>
-            <h3>로그인</h3>
+            <h3>{text}</h3>
             <form>
                 <StyledInput autoComplete="username" name="username" placeholder="아이디"/>
                 <StyledInput 
@@ -50,10 +59,23 @@ const AuthForm = () => {
                     placeholder="비밀번호"
                     type="password"
                 />
-                <Button>로그인</Button>
+                {type === 'register' && (
+                    <StyledInput 
+                        autoComplete="new-password"
+                        name="passwordConfirm"
+                        placeholder="비밀번호 확인"
+                        type="password"
+                    />
+                )}
+                <ButtonWithMarginTop cyan fullWidth>{text}</ButtonWithMarginTop>
             </form>
             <Footer>
-                <Link to="/register">회원가입</Link>
+                {type === 'login' ? (
+                    <Link to="/register">회원가입</Link>
+                ) : (
+                    <Link to="/login">로그인</Link>
+                )}
+                
             </Footer>
         </AuthFormBlock>
     </>
