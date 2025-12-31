@@ -1,7 +1,11 @@
+import AuthForm from "../componets/auth/AuthForm"
+import AuthTemplate from "../componets/auth/AuthTemplate"
+
 const LoginPage = ({ navigate }) => {
     return <>
-        
-        <div>로그인</div>
+        <AuthTemplate>
+            <AuthForm/>
+        </AuthTemplate>
     </>
 }
 

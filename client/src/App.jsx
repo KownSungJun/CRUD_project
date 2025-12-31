@@ -4,30 +4,21 @@ import RegisterPage from './pages/RegisterPage'
 import PostListPage from './pages/PostListPage'
 import WritePage from './pages/WritePage'
 import PostPage from './pages/PostPage'
+import { Route, Routes } from 'react-router-dom'
 
-export const PAGE = {
-  LOGIN: "login",
-  REGISTER: "register",
-  POSTLIST: "postlist",
-  WRITE: "write",
-  POST: "post",
-}
-const PageMap = {
-  [PAGE.LOGIN]: LoginPage,
-  [PAGE.REGISTER]: RegisterPage,
-  [PAGE.POSTLIST]: PostListPage,
-  [PAGE.WRITE]: WritePage,
-  [PAGE.PostPage]: PostPage,
-}
-function App() {
-  const [page, setPage] = useState(PAGE.POSTLIST)
-
-  const CurrentPage = PageMap[page]
-  return (
-    <>
-      <CurrentPage navigate={setPage}/>
-    </>
-  )
+const App = () => {
+  return <>
+    <Routes>
+      <Route path='/' element={<PostListPage/>}/>
+      <Route path='/login' element={<LoginPage/>}/>
+      <Route path='/register' element={<RegisterPage/>}/>
+      <Route path='/write' element={<WritePage/>}/>
+      <Route path='/@:username'>
+        <Route index element={<PostListPage/>}/>
+        <Route path=':postId' element={<PostPage/>}/>
+      </Route>
+    </Routes>
+  </>
 }
 
 export default App

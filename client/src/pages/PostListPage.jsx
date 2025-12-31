@@ -1,9 +1,13 @@
 import Button from "../componets/common/Button"
-
+import { Link } from "react-router-dom"
 const PostListPage = () => {
     return <>
-        <div>포스트 리스트</div>
-        <Button>버튼</Button>
+    <Button>
+        <Link to="/login">로그인</Link>
+      </Button>
+      <Button >
+         <Link to="/register">회원가입</Link>
+      </Button>
     </>
 }
 
