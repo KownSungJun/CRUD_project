@@ -6,7 +6,7 @@
 - User : 유저 정보 관련
 - Post : 글 정보 관련
 ## 라우팅
-라우팅은 NestJS에서 할 것이기 때문에 프론트에서는 개발용으로 페이지 스위칭 방식으로 UI 개발함
+라우팅은 NestJS에서 할 것이기 때문에 프론트에서는 개발용으로 페이지 스위칭 방식으로 UI 개발함 => 그냥 라우팅 일단 쓰고 합칠때 함 수정해야할 듯
 ### Post
 #### Post 엔티티 구조
 ```js
@@ -19,7 +19,7 @@ Post {
     updatedAt   // 수정일
 }
 ```
-#### MongoDB 스키마 변환
+#### 스키마 변환
 ```js
 const postSchema = new Schema({
     title: String,
@@ -29,6 +29,25 @@ const postSchema = new Schema({
     updatedAt: Date,
 })
 ```
+### User
+```js
+User {
+    id              //아이디
+    username        //유저 이름
+    password        //비밀번호
+    userCreatedAt   //계정 생성 시간
+}
+```
+#### 스키마 변환
+```js
+const userSchema = new Schema({
+    id: String,
+    username: String,
+    password: String,
+    userCreatedAt: Date,
+})
+```
+
 # client
 ## pages
 - LoginPage.jsx : 로그인
