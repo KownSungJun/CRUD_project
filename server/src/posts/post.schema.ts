@@ -3,13 +3,13 @@ import { Document } from 'mongoose';
 
 @Schema({ timestamps: true })
 export class Post {
-  @Prop()
+  @Prop({ required: true })
   title: string;
 
-  @Prop()
+  @Prop({ required: true })
   content: string;
 
-  @Prop()
+  @Prop({ required: true, index: true })
   authorId: string;
 }
 
