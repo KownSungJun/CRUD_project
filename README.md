@@ -56,6 +56,15 @@ const userSchema = new Schema({
 - PostPage.jsx : 포스트 읽기
 - PostListPage.jsx : 포스트 목록
 
+## 대충 만든 프론트 느낌
+```text
+/ PostListPage(메인 페이지) : 글들이 나열되어 있음
+/login LoginPage : 로그인 창
+/register RegisterPage : 회원가입 창
+/post:id PostPage : 글 세부 창
+/write WritePage : 글 작성 창
+/mypage:id MyPage : 내 정보 볼 수 있는 창
+```
 ## 관련 vscode extension
 https://nyol.tistory.com/88 : react styled-components 인텔리센스
 
