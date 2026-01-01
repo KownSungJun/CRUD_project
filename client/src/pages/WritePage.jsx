@@ -1,6 +1,15 @@
+import Editor from "../componets/write/Editor"
+import Responsive from "../componets/common/Responsive"
+import TagBox from "../componets/write/TagBox"
+import WriteActionButtons from "../componets/write/WriteActionButton"
+
 const WritePage = () => {
     return <>
-        <div>포스트 쓰기</div>
+        <Responsive>
+            <Editor />
+            <TagBox />
+            <WriteActionButtons />
+        </Responsive>
     </>
 }
 
