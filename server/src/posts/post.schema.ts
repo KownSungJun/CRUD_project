@@ -11,6 +11,9 @@ export class Post {
 
   @Prop({ required: true, index: true })
   authorId: string;
+
+  @Prop({ type: Date, default: null })
+  deletedAt: Date | null;
 }
 
 export type PostDocument = Post & Document;
