@@ -1,0 +1,15 @@
+{
+  "name": "crud-project",
+  "version": "1.0.0",
+  "scripts": {
+    "install:all": "concurrently \"npm install --prefix server\" \"npm install --prefix client\"",
+    "dev": "npm run install:all && concurrently \"npm run start:dev --prefix server\" \"npm run dev --prefix client\"",
+    "dev:server": "npm run dev --prefix server",
+    "dev:client": "npm run dev --prefix client",
+    "build": "concurrently \"npm run build --prefix server\" \"npm run build --prefix client \"",
+    "start": "npm run start:prod --prefix server"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}
