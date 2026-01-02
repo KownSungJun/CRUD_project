@@ -1,5 +1,6 @@
 import Button from "../componets/common/Button"
 import { Link } from "react-router-dom"
+import PostList from "../componets/posts/PostList"
 const PostListPage = () => {
     return <>
     <Button>
@@ -8,6 +9,7 @@ const PostListPage = () => {
       <Button >
          <Link to="/register">회원가입</Link>
       </Button>
+      <PostList/>
     </>
 }
 
