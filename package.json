@@ -2,7 +2,7 @@
   "name": "crud-project",
   "version": "1.0.0",
   "scripts": {
-    "install:all": "concurrently \"npm install --prefix server\" \"npm install --prefix client\"",
+    "install:all": "npm i && concurrently \"npm i --prefix server\" \"npm i --prefix client\"",
     "dev": "npm run install:all && concurrently \"npm run start:dev --prefix server\" \"npm run dev --prefix client\"",
     "dev:server": "npm run dev --prefix server",
     "dev:client": "npm run dev --prefix client",
