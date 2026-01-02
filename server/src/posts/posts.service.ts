@@ -1,8 +1,4 @@
-import {
-  ForbiddenException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Post } from './post.schema';
@@ -16,63 +12,73 @@ export class PostsService {
     private readonly postModel: Model<Post>,
   ) {}
 
-  async findOne(id: string) {
-    const post = await this.postModel.findById(id).exec();
-
-    if (!post) {
-      throw new NotFoundException('Post not found');
-    }
-
-    return post;
+  async findOne(postId: string) {
+    return await this.findPostOrThrow(postId, { lean: true });
   }
 
   async findAll(page: number, limit: number) {
     const skip = (page - 1) * limit;
+    const filter = { deletedAt: null };
 
-    const posts = await this.postModel
-      .find()
-      .sort({ createdAt: -1 })
-      .skip(skip)
-      .limit(Number(limit))
-      .lean();
+    const [items, total] = await Promise.all([
+      this.postModel
+        .find(filter)
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit)
+        .lean(),
+      this.postModel.countDocuments(),
+    ]);
 
-    return posts;
+    return {
+      items,
+      total,
+      page,
+      limit,
+    };
   }
 
   async create(dto: CreatePostDto, authorId: string) {
-    return this.postModel.create({
+    const post = await this.postModel.create({
       ...dto,
       authorId,
     });
+
+    return post.toObject();
   }
 
-  async update(postId: string, dto: UpdatePostDto, userId: string) {
-    const post = await this.postModel.findById(postId);
-
-    if (!post) {
-      throw new NotFoundException('Post not found');
-    }
-
-    if (post.authorId.toString() !== userId) {
-      throw new ForbiddenException('No permission to update this post');
-    }
+  async update(postId: string, dto: UpdatePostDto) {
+    const post = await this.findPostOrThrow(postId);
 
     Object.assign(post, dto);
 
     return post.save();
   }
 
-  async delete(postId: string, userId: string) {
-    const post = await this.postModel.findById(postId);
+  async delete(postId: string) {
+    const post = await this.findPostOrThrow(postId);
 
+    post.deletedAt = new Date();
+    return post.save();
+  }
+
+  // ========================= private methods =========================
+
+  private async findPostOrThrow(postId: string, options?: { lean?: boolean }) {
+    const query = this.postModel.findOne({
+      _id: postId,
+      deletedAt: null,
+    });
+
+    if (options?.lean) {
+      query.lean();
+    }
+
+    const post = await query.exec();
     if (!post) {
       throw new NotFoundException('Post not found');
     }
 
-    if (post.authorId.toString() !== userId) {
-      throw new ForbiddenException('No permission to delete this post');
-    }
-
-    await post.deleteOne();
+    return post;
   }
 }
