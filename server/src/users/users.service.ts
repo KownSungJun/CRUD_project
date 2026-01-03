@@ -13,7 +13,7 @@ import bcrypt from 'bcrypt';
 export class UsersService {
   constructor(
     @InjectModel(User.name)
-    private readonly userModel: Model<User>,
+    private readonly userModel: Model<UserDocument>,
   ) {}
 
   async findByUserIdOrThrow(userId: string) {

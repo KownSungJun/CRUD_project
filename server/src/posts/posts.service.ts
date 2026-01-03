@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Post } from './post.schema';
+import { Post, PostDocument } from './post.schema';
 import { CreatePostDto } from './dtos/create-post.dto';
 import { UpdatePostDto } from './dtos/update-post.dto';
 
@@ -9,7 +9,7 @@ import { UpdatePostDto } from './dtos/update-post.dto';
 export class PostsService {
   constructor(
     @InjectModel(Post.name)
-    private readonly postModel: Model<Post>,
+    private readonly postModel: Model<PostDocument>,
   ) {}
 
   async findOne(postId: string) {

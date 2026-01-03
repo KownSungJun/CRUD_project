@@ -2,7 +2,7 @@ import { Transform } from 'class-transformer';
 import { IsMongoId, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { Types } from 'mongoose';
 
-export class createCommentDto {
+export class CreateCommentDto {
   @IsNotEmpty()
   @IsString()
   content: string;

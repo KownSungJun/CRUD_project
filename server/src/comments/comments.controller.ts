@@ -6,7 +6,7 @@ import { FindParentcommentCommentsQueryDto } from './dto/find-parent-comment-com
 import { CreateCommentDto } from './dto/create-comment.dto';
 
 @Controller('comments')
-export class PostCommentsController {
+export class CommentsController {
   constructor(private commentsService: CommentsService) {}
 
   @Post()

@@ -4,17 +4,17 @@ import { Model, Types } from 'mongoose';
 import { FindParentcommentCommentsQueryDto } from 'src/comments/dto/find-parent-comment-comments.dto';
 import { FindPostCommentsQueryDto } from 'src/comments/dto/find-post-comments.dto';
 import { FindUserCommentsQueryDto } from 'src/comments/dto/find-user-comments.dto';
-import { createCommentDto } from './dto/create-comment.dto';
-import { Comment } from './comment.schema';
+import { CreateCommentDto } from './dto/create-comment.dto';
+import { Comment, CommentDocument } from './comment.schema';
 
 @Injectable()
 export class CommentsService {
   constructor(
     @InjectModel(Comment.name)
-    private readonly commentModel: Model<Comment>,
+    private readonly commentModel: Model<CommentDocument>,
   ) {}
 
-  async create(dto: createCommentDto, userId: string) {
+  async create(dto: CreateCommentDto, userId: string) {
     const { content, postId, parentCommentId } = dto;
 
     return this.commentModel.create({
