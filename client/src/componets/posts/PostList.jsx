@@ -4,6 +4,9 @@ import Button from "../common/Button";
 import palette from "../../lib/styles/palette";
 import SubInfo from "../common/SubInfo";
 import Tags from "../common/Tags";
+import { getComments } from '../../api/comments';
+
+import { useEffect, useState } from "react";
 const PostListBlock = styled(Responsive)`
     margin-top: 3rem;
 `
@@ -67,7 +70,7 @@ const PostItem = () => {
             <PostItemBlock>
                 <h2>제목</h2>
                 <SubInfo username="username" publishedDate={new Date()} />
-                <Tags tags={['태그1', '태그2', '태그3']}/>
+                <Tags tags={['태그1', '태그2', '태그3']} />
                 <p>포스트 내용의 일부분..</p>
             </PostItemBlock>
         </>
@@ -75,6 +78,39 @@ const PostItem = () => {
 }
 
 const PostList = () => {
+    const [posts, setPosts] = useState([])
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const postId = "asdf1234"
+      useEffect(() => {
+    // if (!postId) return; 
+
+    const fetchComments = async () => {
+      try {
+        setLoading(true);
+
+        const res = await getComments({
+          postId, 
+          page: 1,
+          limit: 5,
+        });
+
+        setPosts(res.data);
+      } catch (err) {
+        console.error(err);
+
+        if (err.response?.status === 400) {
+          setError('잘못된 요청입니다.');
+        } else {
+          setError('댓글을 불러오지 못했습니다.');
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchComments();
+  }, [postId]);
     return (
         <>
             <PostListBlock>
@@ -87,6 +123,7 @@ const PostList = () => {
                     <PostItem />
                     <PostItem />
                     <PostItem />
+                    {posts}
                 </div>
             </PostListBlock>
         </>
