@@ -3,7 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import bcrypt from 'bcrypt';
 import { LoginDto } from './dto/login.dto';
 import { UsersService } from 'src/users/users.service';
-import { RegisterDto } from './dto/register.dto';
+import { UserDocument } from 'src/users/user.schema';
 
 @Injectable()
 export class AuthService {
@@ -12,29 +12,31 @@ export class AuthService {
     private usersService: UsersService,
   ) {}
 
-  async register(dto: RegisterDto) {
-    return this.usersService.createUser(dto);
-  }
-
   async login(dto: LoginDto) {
     const { userId, password } = dto;
 
-    const user = await this.usersService.findUser(userId);
-    if (!user) {
-      throw new UnauthorizedException('Invalid credentials');
-    }
+    const user = await this.usersService.findByUserIdOrThrow(userId);
 
     const isMatch = await this.isMatchPassword(password, user.password);
     if (!isMatch) {
       throw new UnauthorizedException('Invalid credentials');
     }
 
-    return {
-      accessToken: this.jwtService.sign({
-        userId: user.id,
+    return { accessToken: this.generateAccessToken(user) };
+  }
+
+  // =========================== private functions ===========================
+
+  private generateAccessToken(user: UserDocument) {
+    return this.jwtService.sign(
+      {
+        userId: user.userId,
         userName: user.userName,
-      }),
-    };
+      },
+      {
+        expiresIn: '1h',
+      },
+    );
   }
 
   private async isMatchPassword(inputPassword: string, dbPassword: string) {
