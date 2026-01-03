@@ -4,9 +4,9 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { Model } from 'mongoose';
-import { User } from './user.schema';
+import { User, UserDocument } from './user.schema';
 import { InjectModel } from '@nestjs/mongoose';
-import { RegisterDto } from 'src/auth/dto/register.dto';
+import { RegisterDto } from 'src/users/dto/register.dto';
 import bcrypt from 'bcrypt';
 
 @Injectable()
@@ -16,7 +16,7 @@ export class UsersService {
     private readonly userModel: Model<User>,
   ) {}
 
-  async findUser(userId: string) {
+  async findByUserIdOrThrow(userId: string) {
     const user = await this.userModel.findOne({ userId }).exec();
 
     if (!user) {
@@ -26,7 +26,7 @@ export class UsersService {
     return user;
   }
 
-  async createUser(dto: RegisterDto) {
+  async register(dto: RegisterDto) {
     const exists = await this.userModel.exists({ userId: dto.userId });
     if (exists) {
       throw new ConflictException('User already exists');
@@ -40,6 +40,8 @@ export class UsersService {
       password: hashedPassword,
     });
 
-    return user.save();
+    const savedUser = await user.save();
+    const { password, ...result } = savedUser.toObject();
+    return result;
   }
 }
