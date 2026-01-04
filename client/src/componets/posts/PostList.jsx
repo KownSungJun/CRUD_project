@@ -123,7 +123,7 @@ const PostList = () => {
                     <PostItem />
                     <PostItem />
                     <PostItem />
-                    {posts}
+                    <h2>포스트 데이터 {posts.postId}</h2>
                 </div>
             </PostListBlock>
         </>
