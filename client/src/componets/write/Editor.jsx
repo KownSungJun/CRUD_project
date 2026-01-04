@@ -32,36 +32,58 @@ const QuillWrapper = styled.div`
         left: 0px;
     }
 `
+const Editor = ({
+  title,
+  content,
+  onChangeTitle,
+  onChangeContent,
+}) => {
+  const quillElement = useRef(null);
+  const quillInstance = useRef(null);
 
-const Editor = () => {
-    const quillElement = useRef(null)
-    const quillInstance = useRef(null)
+  useEffect(() => {
+    quillInstance.current = new Quill(quillElement.current, {
+      theme: 'bubble',
+      placeholder: '내용을 작성하세요...',
+      modules: {
+        toolbar: [
+          [{ header: '1' }, { header: '2' }],
+          ['bold', 'italic', 'underline', 'strike'],
+          [{ list: 'ordered' }, { list: 'bullet' }],
+          ['blockquote', 'code-block', 'link', 'image'],
+        ],
+      },
+    });
 
+    const quill = quillInstance.current;
 
-    useEffect(() => {
-        quillInstance.current = new Quill(quillElement.current, {
-            theme: 'bubble',
-            placeholder: '내용을 작성하세요...',
-            modules: {
-                toolbar: [
-                    [{header: '1'}, {header: '2'}],
-                    ['bold', 'italic', 'underline', 'strike'],
-                    [{list:'ordered'}, {list:'bullet'}],
-                    ['blockquote', 'code-block', 'link', 'image'],
-                ]
-            }
-        })
-    }, [])
+    // 🔥 핵심: Quill → React state 연결
+    quill.on('text-change', () => {
+      onChangeContent(quill.root.innerHTML);
+    });
 
-    return (
-        <EditorBlock>
-            <TitleInput placeholder="제목을 입력하세요"/>
-            <QuillWrapper>
-                <div ref={quillElement}/>
-            </QuillWrapper>
-        </EditorBlock>
-    )
-}
+    // 수정 페이지 대비 (content 초기값)
+    if (content) {
+      quill.root.innerHTML = content;
+    }
 
+    return () => {
+      quill.off('text-change');
+    };
+  }, []);
 
-export default Editor
+  return (
+    <EditorBlock>
+      <TitleInput
+        placeholder="제목을 입력하세요"
+        value={title}
+        onChange={(e) => onChangeTitle(e.target.value)}
+      />
+      <QuillWrapper>
+        <div ref={quillElement} />
+      </QuillWrapper>
+    </EditorBlock>
+  );
+};
+
+export default Editor;
