@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "install:all": "npm i && concurrently \"npm i --prefix server\" \"npm i --prefix client\"",
-    "dev": "npm run install:all && concurrently \"npm run start:dev --prefix server\" \"npm run dev --prefix client\"",
+    "dev": "npm run install:all && npm run build && concurrently \"npm run start:dev --prefix server\" \"npm run dev --prefix client\"",
     "dev:server": "npm run dev --prefix server",
     "dev:client": "npm run dev --prefix client",
     "build": "concurrently \"npm run build --prefix server\" \"npm run build --prefix client \"",
