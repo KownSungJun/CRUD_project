@@ -3,37 +3,54 @@ import Responsive from "../componets/common/Responsive"
 import TagBox from "../componets/write/TagBox"
 import WriteActionButtons from "../componets/write/WriteActionButton"
 import { useState } from "react"
+import { writePost } from "../api/posts"
+import { useNavigate } from "react-router-dom"
+
+const TEMP_AUTHOR_ID = "temp-user-001";
 
 const WritePage = ({onSuccess}) => {
     const [title, setTitle] = useState("")
     const [content, setContent] = useState("")
+    const [loading, setLoading] = useState(false);
 
-    const submitHandler = async (e) => {
-    e.preventDefault();
+    const navigate = useNavigate();
 
-    const res = await fetch("/posts", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ title, content }),
-    });
-
-    if (!res.ok) {
-      alert("글 작성 실패");
+  const onPublish = async () => {
+    if (!title || !content) {
+      alert('제목과 내용을 입력하세요');
       return;
     }
 
-    setTitle("");
-    setContent("");
+    try {
+      setLoading(true);
 
-    onSuccess(); 
+      const res = await writePost({
+        title,
+        content, 
+        authorId: TEMP_AUTHOR_ID,
+      });
+
+      navigate(`/posts/${res.data._id}`);
+    onSuccess?.();
+    } catch (e) {
+      console.error(e);
+      alert('게시글 작성 실패');
+    } finally {
+      setLoading(false);
+    }
   };
     return <>
         <Responsive>
-            <Editor />
+            <Editor 
+              title={title}
+              content={content}
+              
+              onChangeTitle={setTitle}
+              onChangeContent={setContent}/>
             <TagBox />
-            <WriteActionButtons />
+            <WriteActionButtons 
+              onPublish={onPublish}
+              loading={loading}/>
         </Responsive>
     </>
 }
