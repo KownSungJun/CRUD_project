@@ -12,7 +12,14 @@ export class UsersController {
   }
 
   @Post('register')
-  register(@Body() dto: RegisterDto) {
-    return this.usersService.register(dto);
+  async register(@Body() dto: RegisterDto) {
+      try {
+    // 로그를 추가하여 dto 내용을 확인합니다.
+    console.log('Received DTO:', dto);
+    return await this.usersService.register(dto);
+  } catch (error) {
+    console.log(error);  // error 객체에서 메시지를 확인해보세요
+    throw new Error('Registration failed');
   }
+}
 }

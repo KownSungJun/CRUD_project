@@ -1,9 +1,14 @@
 import api from './client'
 
 export const register = ({ userId, userName, password }) => {
-  return api.post("/auth/register", {
+  console.log("userId : ",typeof userId, "| password : ",typeof password," | userName : ",typeof userName)
+  return api.post("/users/register", {
     userId,
     userName,
     password,
-  }, { withCredentials: true });
+  }, { withCredentials: true,
+    headers: {
+      'Content-Type': 'application/json', 
+    }
+   });
 };
