@@ -4,8 +4,7 @@ import Button from "../common/Button";
 import palette from "../../lib/styles/palette";
 import SubInfo from "../common/SubInfo";
 import Tags from "../common/Tags";
-import { getComments } from '../../api/comments';
-
+import { getPosts } from "../../api/posts";
 import { useEffect, useState } from "react";
 const PostListBlock = styled(Responsive)`
     margin-top: 3rem;
@@ -64,53 +63,48 @@ const PostItemBlock = styled.div`
 //     }
 // `
 
-const PostItem = () => {
+const PostItem = ({post}) => {
     return (
         <>
             <PostItemBlock>
-                <h2>제목</h2>
-                <SubInfo username="username" publishedDate={new Date()} />
-                <Tags tags={['태그1', '태그2', '태그3']} />
-                <p>포스트 내용의 일부분..</p>
+                <h2>{post.title}</h2>
+                <SubInfo username={post.user?.username} publishedDate={new Date(post.createdAt)} />
+                {post.tags && <Tags tags={posts.tags} />}
+                <p>{post.body.slice(0,100)}...</p>
             </PostItemBlock>
         </>
     )
 }
 
 const PostList = () => {
-    const [posts, setPosts] = useState([])
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const postId = "asdf1234"
-      useEffect(() => {
-    // if (!postId) return; 
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-    const fetchComments = async () => {
+  useEffect(() => {
+    const fetchPosts = async () => {
       try {
         setLoading(true);
-
-        const res = await getComments({
-          postId, 
-          page: 1,
-          limit: 5,
-        });
-
-        setPosts(res.data);
-      } catch (err) {
-        console.error(err);
-
-        if (err.response?.status === 400) {
-          setError('잘못된 요청입니다.');
-        } else {
-          setError('댓글을 불러오지 못했습니다.');
-        }
+        const res = await getPosts({ page: 1, limit: 10 });
+        console.log('posts response:', res.data);
+        setPosts(res.data); // ← 응답 구조에 맞게
+      } catch (e) {
+        console.error(e);
+        setError('게시글을 불러오지 못했습니다.');
       } finally {
         setLoading(false);
       }
     };
 
-    fetchComments();
-  }, [postId]);
+    fetchPosts();
+  }, []);
+
+  if (loading) return <div>로딩중...</div>;
+  if (error) return <div>{error}</div>;
+
+  if(posts.items.length == 0) {
+    return <p>게시물이 없습니다.</p>
+  }
     return (
         <>
             <PostListBlock>
@@ -123,7 +117,10 @@ const PostList = () => {
                     <PostItem />
                     <PostItem />
                     <PostItem />
-                    <h2>포스트 데이터 {posts.postId}</h2>
+                    <h2>포스트 데이터</h2>
+                    {posts.map(post => (
+                        <PostItem key={post._id} post={post} />
+                    ))}
                 </div>
             </PostListBlock>
         </>
