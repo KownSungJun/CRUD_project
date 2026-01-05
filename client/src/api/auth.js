@@ -12,3 +12,10 @@ export const register = ({ userId, userName, password }) => {
     }
    });
 };
+
+export const login = ({userId, password}) => {
+  return api.post("/auth/login", {
+    userId,
+    password
+  })
+}

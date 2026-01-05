@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import palette from "../../lib/styles/palette";
 import Button from "../common/Button";
-
+import { useAuth } from "../../contexts/AuthContext";
 const AuthFormBlock = styled.div`
     h3 {
         margin: 0;
@@ -44,6 +44,7 @@ const Footer = styled.div`
 
 
 const LoginForm = () => {
+    //여기부터 개발 시작
     return <>
         <AuthFormBlock>
             <h3>로그인</h3>
