@@ -9,6 +9,8 @@ import { InjectModel } from '@nestjs/mongoose';
 import { RegisterDto } from './dto/register.dto';
 import bcrypt from 'bcrypt';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { plainToInstance } from 'class-transformer';
+import { UserResponseDto } from './dto/user-response.dto';
 
 @Injectable()
 export class UsersService {
@@ -32,18 +34,32 @@ export class UsersService {
     return user;
   }
 
-  async update(userId: string, dto: UpdateUserDto) {
+  async getUser(userId: string) {
     const user = await this.findByUserIdOrThrow(userId);
 
-    Object.assign(user, dto);
+    return plainToInstance(UserResponseDto, user.toObject(), {
+      excludeExtraneousValues: true,
+    });
+  }
 
-    return user.save();
+  async update(userId: string, dto: UpdateUserDto) {
+    const user = await this.findByUserIdOrThrow(userId);
+    Object.assign(user, dto);
+    user.save();
+
+    return plainToInstance(UserResponseDto, user.toObject(), {
+      excludeExtraneousValues: true,
+    });
   }
 
   async delete(userId: string) {
     const user = await this.findByUserIdOrThrow(userId);
     user.deletedAt = new Date();
-    return user.save();
+    user.save();
+
+    return plainToInstance(UserResponseDto, user.toObject(), {
+      excludeExtraneousValues: true,
+    });
   }
 
   async register(dto: RegisterDto) {
@@ -61,7 +77,8 @@ export class UsersService {
     });
 
     const savedUser = await user.save();
-    const { password, ...result } = savedUser.toObject();
-    return result;
+    return plainToInstance(UserResponseDto, savedUser.toObject(), {
+      excludeExtraneousValues: true,
+    });
   }
 }
