@@ -11,6 +11,9 @@ export class User {
 
   @Prop({ required: true })
   userName: string;
+
+  @Prop({ type: Date, default: null })
+  deletedAt: Date | null;
 }
 
 export type UserDocument = HydratedDocument<User>;

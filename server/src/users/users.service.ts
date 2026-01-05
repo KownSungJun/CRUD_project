@@ -6,8 +6,9 @@ import {
 import { Model } from 'mongoose';
 import { User, UserDocument } from './user.schema';
 import { InjectModel } from '@nestjs/mongoose';
-import { RegisterDto } from 'src/users/dto/register.dto';
+import { RegisterDto } from './dto/register.dto';
 import bcrypt from 'bcrypt';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UsersService {
@@ -22,13 +23,27 @@ export class UsersService {
   }
 
   async findByUserIdOrThrow(userId: string) {
-    const user = this.findByUserId(userId);
+    const user = await this.findByUserId(userId);
 
     if (!user) {
       throw new NotFoundException('User not found');
     }
 
     return user;
+  }
+
+  async update(userId: string, dto: UpdateUserDto) {
+    const user = await this.findByUserIdOrThrow(userId);
+
+    Object.assign(user, dto);
+
+    return user.save();
+  }
+
+  async delete(userId: string) {
+    const user = await this.findByUserIdOrThrow(userId);
+    user.deletedAt = new Date();
+    return user.save();
   }
 
   async register(dto: RegisterDto) {
