@@ -16,8 +16,13 @@ export class UsersService {
     private readonly userModel: Model<UserDocument>,
   ) {}
 
-  async findByUserIdOrThrow(userId: string) {
+  async findByUserId(userId: string) {
     const user = await this.userModel.findOne({ userId }).exec();
+    return user;
+  }
+
+  async findByUserIdOrThrow(userId: string) {
+    const user = this.findByUserId(userId);
 
     if (!user) {
       throw new NotFoundException('User not found');
