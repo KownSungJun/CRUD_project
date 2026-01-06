@@ -10,14 +10,7 @@ export class AuthController {
   @ApiLogin()
   @HttpCode(200)
   @Post('login')
-  async login(@Body() dto: LoginDto, @Res({ passthrough: true }) res) {
-    const token = await this.authService.login(dto);
-
-    res.cookie('access_token', token, {
-      httpOnly: true,
-      secure: true,
-    });
-
-    return { ok: true };
+  login(@Body() dto: LoginDto) {
+    return this.authService.login(dto);
   }
 }

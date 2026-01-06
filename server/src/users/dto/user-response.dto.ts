@@ -20,5 +20,5 @@ export class UserResponseDto {
 
   @ApiProperty({ type: String, format: 'date-time' })
   @Expose()
-  readonly deletedAt: Date;
+  readonly deletedAt: Date | null;
 }

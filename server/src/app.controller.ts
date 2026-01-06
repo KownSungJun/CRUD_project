@@ -3,7 +3,7 @@ import { join } from 'path';
 
 @Controller()
 export class AppController {
-  @Get('*')
+  @Get('*path')
   serveApp(@Req() req, @Res() res, @Next() next) {
     if (req.path.startsWith('/api')) {
       return next();
