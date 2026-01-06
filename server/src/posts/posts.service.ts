@@ -1,9 +1,11 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types, isValidObjectId } from 'mongoose';
 import { Post, PostDocument } from './post.schema';
 import { CreatePostDto } from './dtos/create-post.dto';
 import { UpdatePostDto } from './dtos/update-post.dto';
+import { PostResponseDto } from './dtos/post-response.dto';
+import { plainToInstance } from 'class-transformer';
 
 @Injectable()
 export class PostsService {
@@ -13,7 +15,8 @@ export class PostsService {
   ) {}
 
   async findOne(postId: string) {
-    return await this.findPostOrThrow(postId, { lean: true });
+    const post = await this.findPostOrThrow(postId, { lean: true });
+    return this.toDto(post);
   }
 
   async findAll(page: number, limit: number) {
@@ -27,11 +30,11 @@ export class PostsService {
         .skip(skip)
         .limit(limit)
         .lean(),
-      this.postModel.countDocuments(),
+      this.postModel.countDocuments(filter),
     ]);
 
     return {
-      items,
+      items: items.map(this.toDto),
       total,
       page,
       limit,
@@ -39,46 +42,50 @@ export class PostsService {
   }
 
   async create(dto: CreatePostDto, authorId: string) {
-    const post = await this.postModel.create({
-      ...dto,
-      authorId,
-    });
-
-    return post.toObject();
+    const post = await this.postModel.create({ ...dto, authorId });
+    return this.toDto(post.toObject());
   }
 
   async update(postId: string, dto: UpdatePostDto) {
     const post = await this.findPostOrThrow(postId);
-
     Object.assign(post, dto);
-
-    return post.save();
+    const updated = await post.save();
+    return this.toDto(updated.toObject());
   }
 
   async delete(postId: string) {
     const post = await this.findPostOrThrow(postId);
-
     post.deletedAt = new Date();
-    return post.save();
+    const deleted = await post.save();
+    return this.toDto(deleted.toObject());
   }
 
   // ========================= private methods =========================
 
   private async findPostOrThrow(postId: string, options?: { lean?: boolean }) {
+    if (!isValidObjectId(postId)) {
+      throw new NotFoundException('Invalid postId');
+    }
+
     const query = this.postModel.findOne({
-      _id: postId,
+      _id: new Types.ObjectId(postId),
       deletedAt: null,
     });
 
-    if (options?.lean) {
-      query.lean();
-    }
+    if (options?.lean) query.lean();
 
     const post = await query.exec();
+
     if (!post) {
       throw new NotFoundException('Post not found');
     }
 
     return post;
+  }
+
+  private toDto(post: any): PostResponseDto {
+    return plainToInstance(PostResponseDto, post, {
+      excludeExtraneousValues: true,
+    });
   }
 }

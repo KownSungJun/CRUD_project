@@ -15,7 +15,10 @@ export class AuthService {
   async login(dto: LoginDto) {
     const { userId, password } = dto;
 
-    const user = await this.usersService.findByUserIdOrThrow(userId);
+    const user = await this.usersService.findByUserId(userId);
+    if (!user) {
+      throw new UnauthorizedException('Invalid credentials');
+    }
 
     const isMatch = await this.isMatchPassword(password, user.password);
     if (!isMatch) {
