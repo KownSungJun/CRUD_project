@@ -1,6 +1,8 @@
 import { Controller, Get, Next, Req, Res } from '@nestjs/common';
+import { ApiExcludeController } from '@nestjs/swagger';
 import { join } from 'path';
 
+@ApiExcludeController()
 @Controller()
 export class AppController {
   @Get('*path')
