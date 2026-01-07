@@ -1,19 +1,18 @@
-import { Transform } from 'class-transformer';
+import { ApiProperty } from '@nestjs/swagger';
 import { IsMongoId, IsNotEmpty, IsOptional, IsString } from 'class-validator';
-import { Types } from 'mongoose';
 
 export class CreateCommentDto {
-  @IsNotEmpty()
+  @ApiProperty({ example: '재밌는 글이에요' })
   @IsString()
+  @IsNotEmpty()
   content: string;
 
+  @ApiProperty({ example: '65a1234abc...' })
   @IsNotEmpty()
-  @Transform(({ value }) => new Types.ObjectId(value))
   @IsMongoId()
-  postId: Types.ObjectId;
+  postId: string;
 
   @IsOptional()
-  @Transform(({ value }) => (value ? new Types.ObjectId(value) : null))
   @IsMongoId()
-  parentCommentId?: Types.ObjectId | null;
+  parentCommentId?: string | null;
 }

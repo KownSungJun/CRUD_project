@@ -13,7 +13,7 @@ export class PostOwnershipGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const req = context.switchToHttp().getRequest();
     const userId = req.user.userId;
-    const postId = req.params.id;
+    const postId = req.params.postId;
 
     const post = await this.postsService.findOne(postId);
 

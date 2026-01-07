@@ -73,3 +73,15 @@ https://nyol.tistory.com/88 : react styled-components 인텔리센스
 # server
 [api 명세서](./server/docs/api-spec.md) <br>
 [학습 내용](./server/docs/study.md)
+
+# api
+/users/:id POST
+/users/register POST
+/posts/:id GET
+/posts GET
+/posts POST
+/posts/:id PATCH
+/posts/:id DELETE
+/auth/login POST
+/comments POST
+/comments GET
