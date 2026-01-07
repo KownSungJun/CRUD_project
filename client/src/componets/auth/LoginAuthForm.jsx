@@ -2,7 +2,12 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import palette from "../../lib/styles/palette";
 import Button from "../common/Button";
-import { useAuth } from "../../contexts/AuthContext";
+import { useDispatch, useSelector } from "react-redux";
+import {useState } from "react";
+import {login} from "../../store/authSlice"
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
 const AuthFormBlock = styled.div`
     h3 {
         margin: 0;
@@ -42,21 +47,33 @@ const Footer = styled.div`
 `
 
 
-
-const LoginForm = () => {
-    //여기부터 개발 시작
+const LoginAuthForm = ({form, onChange, onSubmit, loading, error}) => {
     return <>
         <AuthFormBlock>
             <h3>로그인</h3>
-            <form>
-                <StyledInput autoComplete="id" name="userId" placeholder="아이디" />
+            <form
+                onSubmit={onSubmit}
+            >
+                
+                <StyledInput 
+                    autoComplete="id" 
+                    name="userId" 
+                    placeholder="아이디" 
+                    onChange={onChange} 
+                    value={form.userId}
+                />
                 <StyledInput
                     autoComplete="new-password"
                     name="password"
                     placeholder="비밀번호"
                     type="password"
+                    onChange={onChange}
+                    value={form.password}
                 />
-                <ButtonWithMarginTop cyan fullWidth>로그인</ButtonWithMarginTop>
+                {error && <div style={{color: 'red'}}>{error}</div>}
+                <ButtonWithMarginTop cyan fullWidth disabled={loading}>
+                    {loading ? '로그인 중...':'로그인'}
+                </ButtonWithMarginTop>
             </form>
             <Footer>
                 <Link to="/register">회원가입</Link>
@@ -65,4 +82,4 @@ const LoginForm = () => {
     </>
 }
 
-export default LoginForm
+export default LoginAuthForm

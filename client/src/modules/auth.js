@@ -1,8 +1,8 @@
 import { createAction, handleActions} from 'redux-actions'
-import produce from 'immer'
+import {produce} from 'immer'
 
 const CHANGE_FIELD = 'auth/CHANGE_FIELD'
-const INITIALIZE = 'auth/INITIALIZE_FORM'
+const INITIALIZE_FORM = 'auth/INITIALIZE_FORM'
 
 export const changeField = createAction(
     CHANGE_FIELD,
@@ -17,12 +17,13 @@ export const initializeForm = createAction(INITIALIZE_FORM, form => form)
 
 const initialState = {
     register: {
-        username: '',
+        userId: '',
         password: '',
         passwordConfirm: '',
+        userName: '',
     },
     login: {
-        username: '',
+        userId: '',
         password: '',
     }
 }

@@ -10,12 +10,17 @@ export const register = ({ userId, userName, password }) => {
     headers: {
       'Content-Type': 'application/json', 
     }
-   });
+   }) 
 };
 
-export const login = ({userId, password}) => {
+export const Login = ({userId, password}) => {
   return api.post("/auth/login", {
     userId,
     password
-  })
+  }, {withCredentials: true})
+}
+
+export const Logout = () => {
+  return api.post("/auth/logout", {
+  }, {withCredentials: true})
 }
