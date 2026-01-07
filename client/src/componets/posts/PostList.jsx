@@ -6,6 +6,7 @@ import SubInfo from "../common/SubInfo";
 import Tags from "../common/Tags";
 import { getPosts } from "../../api/posts";
 import { useEffect, useState } from "react";
+import * as postAPI from '../../api/posts'
 const PostListBlock = styled(Responsive)`
     margin-top: 3rem;
 `
@@ -68,9 +69,11 @@ const PostItem = ({post}) => {
         <>
             <PostItemBlock>
                 <h2>{post.title}</h2>
+                <h3>{post.authorId}</h3>
                 <SubInfo username={post.user?.username} publishedDate={new Date(post.createdAt)} />
                 {post.tags && <Tags tags={posts.tags} />}
-                <p>{post.body.slice(0,100)}...</p>
+                <p>{post.content.slice(0,100)}...</p>
+                
             </PostItemBlock>
         </>
     )
@@ -84,10 +87,9 @@ const PostList = () => {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        setLoading(true);
         const res = await getPosts({ page: 1, limit: 10 });
         console.log('posts response:', res.data);
-        setPosts(res.data); // ← 응답 구조에 맞게
+        setPosts(res.data.items); // ← 응답 구조에 맞게
       } catch (e) {
         console.error(e);
         setError('게시글을 불러오지 못했습니다.');
@@ -102,24 +104,20 @@ const PostList = () => {
   if (loading) return <div>로딩중...</div>;
   if (error) return <div>{error}</div>;
 
-  if(posts.items.length == 0) {
+  if(posts.length == 0) {
     return <p>게시물이 없습니다.</p>
   }
     return (
         <>
             <PostListBlock>
-                <WritePostButtonWrapper>
+                {/* <WritePostButtonWrapper>
                     <Button cyan to="/write">
                         새 글 작성하기
                     </Button>
-                </WritePostButtonWrapper>
+                </WritePostButtonWrapper> */}
                 <div>
-                    <PostItem />
-                    <PostItem />
-                    <PostItem />
-                    <h2>포스트 데이터</h2>
                     {posts.map(post => (
-                        <PostItem key={post._id} post={post} />
+                        <PostItem key={post.id} post={post} />
                     ))}
                 </div>
             </PostListBlock>

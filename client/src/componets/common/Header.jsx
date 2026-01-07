@@ -24,6 +24,9 @@ const Wrapper = styled(Responsive)`
         display: flex;
         align-items: center;
     }
+    .right * {
+        margin-right: 5px;
+    }
 `
 
 const Spacer = styled.div`
@@ -43,7 +46,8 @@ const Header = ({user, onLogout}) => {
                     <Link to="/" className='logo'>CRUD</Link>
                     {user ? (
                         <div className='right'>
-                            <UserInfo>{user.userId}</UserInfo>
+                            <UserInfo>{user.userId} </UserInfo>
+                            <Button to="/write">글 쓰기</Button>
                             <Button onClick={onLogout}>로그아웃</Button>
                         </div>
                     ) : (
