@@ -3,7 +3,7 @@ import { Transform } from 'class-transformer';
 import { IsInt, IsNotEmpty, IsOptional, IsString, Min } from 'class-validator';
 
 export class FindUserCommentsQueryDto {
-  @ApiProperty({ example: ""})
+  @ApiProperty({ example: '' })
   @IsNotEmpty()
   @IsString()
   userId: string;
@@ -14,7 +14,7 @@ export class FindUserCommentsQueryDto {
   @IsInt()
   @Min(1)
   page: number = 1;
-  
+
   @ApiProperty({ required: false, default: 10, minimum: 1 })
   @IsOptional()
   @Transform(() => Number)

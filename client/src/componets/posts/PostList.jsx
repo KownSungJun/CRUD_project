@@ -1,44 +1,44 @@
-import styled from "styled-components";
-import Responsive from "../common/Responsive"
-import Button from "../common/Button";
-import palette from "../../lib/styles/palette";
-import SubInfo from "../common/SubInfo";
-import Tags from "../common/Tags";
-import { getPosts } from "../../api/posts";
-import { useEffect, useState } from "react";
-import * as postAPI from '../../api/posts'
+import styled from 'styled-components';
+import Responsive from '../common/Responsive';
+import Button from '../common/Button';
+import palette from '../../lib/styles/palette';
+import SubInfo from '../common/SubInfo';
+import Tags from '../common/Tags';
+import { getPosts } from '../../api/posts';
+import { useEffect, useState } from 'react';
+import * as postAPI from '../../api/posts';
 const PostListBlock = styled(Responsive)`
-    margin-top: 3rem;
-`
+  margin-top: 3rem;
+`;
 
 const WritePostButtonWrapper = styled.div`
-    display: flex;
-    justify-content: flex-end;
-    margin-bottom: 3rem;
-`
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 3rem;
+`;
 
 const PostItemBlock = styled.div`
-    padding-top: 3rem;
-    padding-bottom: 3rem;
-    &:first-child {
-        padding-top : 0
-    }
-    & + & {
-        border-top: 1px solid ${palette.gray[2]};
-    }
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+  &:first-child {
+    padding-top: 0;
+  }
+  & + & {
+    border-top: 1px solid ${palette.gray[2]};
+  }
 
-    h2 {
-        font-size: 2rem;
-        margin-bottom: 0;
-        margin-top: 0;
-        &:hover {
-            color: ${palette.gray[6]};
-        }
+  h2 {
+    font-size: 2rem;
+    margin-bottom: 0;
+    margin-top: 0;
+    &:hover {
+      color: ${palette.gray[6]};
     }
-    p {
-        margin-top: 2rem;
-    }
-`
+  }
+  p {
+    margin-top: 2rem;
+  }
+`;
 
 // const SubInto = styled.div`
 //     color: ${palette.gray[6]};
@@ -64,20 +64,20 @@ const PostItemBlock = styled.div`
 //     }
 // `
 
-const PostItem = ({post}) => {
-    return (
-        <>
-            <PostItemBlock>
-                <h2>{post.title}</h2>
-                <h3>{post.authorId}</h3>
-                <SubInfo username={post.user?.username} publishedDate={new Date(post.createdAt)} />
-                {post.tags && <Tags tags={posts.tags} />}
-                <p>{post.content.slice(0,100)}...</p>
-                
-            </PostItemBlock>
-        </>
-    )
-}
+const PostItem = ({ post }) => {
+  console.log(post);
+  return (
+    <>
+      <PostItemBlock>
+        <h2>{post.title}</h2>
+        <h3>{post.userName}</h3>
+        <SubInfo username={post.user?.username} publishedDate={new Date(post.createdAt)} />
+        {post.tags && <Tags tags={posts.tags} />}
+        <p>{post.content.slice(0, 100)}...</p>
+      </PostItemBlock>
+    </>
+  );
+};
 
 const PostList = () => {
   const [posts, setPosts] = useState([]);
@@ -104,25 +104,25 @@ const PostList = () => {
   if (loading) return <div>로딩중...</div>;
   if (error) return <div>{error}</div>;
 
-  if(posts.length == 0) {
-    return <p>게시물이 없습니다.</p>
+  if (posts.length == 0) {
+    return <p>게시물이 없습니다.</p>;
   }
-    return (
-        <>
-            <PostListBlock>
-                {/* <WritePostButtonWrapper>
+  return (
+    <>
+      <PostListBlock>
+        {/* <WritePostButtonWrapper>
                     <Button cyan to="/write">
                         새 글 작성하기
                     </Button>
                 </WritePostButtonWrapper> */}
-                <div>
-                    {posts.map(post => (
-                        <PostItem key={post.id} post={post} />
-                    ))}
-                </div>
-            </PostListBlock>
-        </>
-    )
-}
+        <div>
+          {posts.map((post) => (
+            <PostItem key={post.id} post={post} />
+          ))}
+        </div>
+      </PostListBlock>
+    </>
+  );
+};
 
 export default PostList;

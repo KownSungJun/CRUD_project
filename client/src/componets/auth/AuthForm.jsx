@@ -3,7 +3,6 @@
 // import palette from "../../lib/styles/palette";
 // import Button from "../common/Button";
 
-
 // const AuthFormBlock = styled.div`
 //     h3 {
 //         margin: 0;
@@ -53,7 +52,7 @@
 //             <h3>{text}</h3>
 //             <form onSubmit={onSubmit}>
 //                 <StyledInput autoComplete="username" name="userName" placeholder="아이디" onChange={onChange} value={form.userId}/>
-//                 <StyledInput 
+//                 <StyledInput
 //                     autoComplete="new-password"
 //                     name="password"
 //                     placeholder="비밀번호"
@@ -62,7 +61,7 @@
 //                     value={form.password}
 //                 />
 //                 {type === 'register' && (
-//                     <StyledInput 
+//                     <StyledInput
 //                         autoComplete="new-password"
 //                         name="passwordConfirm"
 //                         placeholder="비밀번호 확인"
@@ -74,10 +73,8 @@
 //             </form>
 //             <Footer>
 
-
 //                     <Link to="/login">로그인</Link>
 
-                
 //             </Footer>
 //         </AuthFormBlock>
 //     </>
