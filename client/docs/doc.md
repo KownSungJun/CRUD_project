@@ -50,11 +50,11 @@ const userSchema = new Schema({
 # client
 ## pages
 - LoginPage.jsx : 로그인
-![alt text](docs/images/image.png)
+![alt text](./images/image.png)
 - RegisterPage.jsx : 회원가입
-![alt text](docs/images/image-1.png)
+![alt text](./images/image-1.png)
 - WritePage.jsx : 글쓰기
-![alt text](docs/images/image-2.png)
+![alt text](./images/image-2.png)
 - PostPage.jsx : 포스트 읽기
 - PostListPage.jsx : 포스트 목록
 

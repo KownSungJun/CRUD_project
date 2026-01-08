@@ -2,6 +2,7 @@
   "name": "crud-project",
   "version": "1.0.0",
   "scripts": {
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",
     "install:all": "npm i && concurrently \"npm i --prefix server\" \"npm i --prefix client\"",
     "dev": "npm run install:all && npm run build && concurrently \"npm run start:dev --prefix server\" \"npm run dev --prefix client\"",
     "dev:server": "npm run dev --prefix server",
@@ -10,6 +11,7 @@
     "start": "npm run start:prod --prefix server"
   },
   "devDependencies": {
-    "concurrently": "^9.2.1"
+    "concurrently": "^9.2.1",
+    "prettier": "^3.7.4"
   }
 }
