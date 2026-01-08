@@ -2,6 +2,8 @@ import styled from 'styled-components'
 import Button from './Button'
 import { Link } from 'react-router-dom'
 import Responsive from './Responsive'
+import { useDispatch, useSelector } from 'react-redux'
+import { logout } from '../../store/authSlice'
 
 const HeaderBlock = styled.div`
     position: fixed;
@@ -24,6 +26,9 @@ const Wrapper = styled(Responsive)`
         display: flex;
         align-items: center;
     }
+    .right * {
+        margin-right: 5px;
+    }
 `
 
 const Spacer = styled.div`
@@ -34,8 +39,15 @@ const UserInfo = styled.div`
     font-weight: 800;
     margin-right: 1rem;
 `
-
-const Header = ({user, onLogout}) => {
+/**
+ * 
+ * header 변경 및 전체 login 손 봐야함
+ * token 전달이 안되고 있는듯 post할때 뭔데 token 문제 발생
+ * login store, token 리덕스 손봐야함
+ */
+const Header = () => {
+    const dispatch = useDispatch()
+    const {user} = useSelector(state => state.auth)
     return (
         <>
             <HeaderBlock>
@@ -43,8 +55,9 @@ const Header = ({user, onLogout}) => {
                     <Link to="/" className='logo'>CRUD</Link>
                     {user ? (
                         <div className='right'>
-                            <UserInfo>{user.userId}</UserInfo>
-                            <Button onClick={onLogout}>로그아웃</Button>
+                            <UserInfo>{user.userId} </UserInfo>
+                            <Button to="/write">글 쓰기</Button>
+                            <Button onClick={() => dispatch(logout())}>로그아웃</Button>
                         </div>
                     ) : (
                         <div className='right'>
