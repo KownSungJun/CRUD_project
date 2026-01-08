@@ -38,10 +38,12 @@ const authSlice = createSlice({
         state.error = null
       })
       .addCase(login.fulfilled, (state, action) => {
+        console.log('login payload:', action.payload)
         state.loading = false
-        state.user = action.payload.user
         state.token = action.payload.accessToken
-
+        state.user = { 
+          userId: action.meta.arg.userId,
+        }
         localStorage.setItem('accessToken', action.payload.accessToken)
       })
       .addCase(login.rejected, (state, action) => {

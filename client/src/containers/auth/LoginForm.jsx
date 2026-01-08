@@ -9,7 +9,7 @@ const LoginForm = () => {
     const navigate = useNavigate()
 
     const form  = useSelector(state =>  state.authForm.login)
-    const {user, loading, error} = useSelector(state => state.auth)
+    const {token, loading, error} = useSelector(state => state.auth)
 
     const onChange = e => {
         const { name, value } = e.target
@@ -37,10 +37,10 @@ const LoginForm = () => {
     }, [dispatch])
 
     useEffect(() => {
-        if(user) {
-            navigate('/')
+        if(token) {
+            navigate('/', {replace: true})
         }
-    }, [user, navigate])
+    }, [token, navigate])
 
     return (
         <LoginAuthForm 

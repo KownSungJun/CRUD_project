@@ -27,7 +27,7 @@ const WritePage = () => {
         content, 
       });
 
-      navigate(`/posts`)
+      navigate(`/`)
     } catch (e) {
       console.error(e);
       alert('게시글 작성 실패');

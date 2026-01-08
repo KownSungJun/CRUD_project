@@ -59,7 +59,9 @@ const Editor = ({
 
     // 🔥 핵심: Quill → React state 연결
     quill.on('text-change', () => {
-      onChangeContent(quill.root.innerHTML);
+      const html = quill.root.innerHTML;
+      const text = quill.getText().trim();
+      onChangeContent(text ? html : '');
     });
 
     // 수정 페이지 대비 (content 초기값)
