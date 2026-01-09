@@ -59,6 +59,9 @@ const Header = () => {
             <div className="right">
               <UserInfo>{user.userId} </UserInfo>
               <Button to="/write">글 쓰기</Button>
+              
+              <Button to={`/@${user.userId}`}>글 관리</Button>
+              <Button to={`/@${user.userId}`}>내 정보</Button>
               <Button onClick={() => dispatch(logout())}>로그아웃</Button>
             </div>
           ) : (

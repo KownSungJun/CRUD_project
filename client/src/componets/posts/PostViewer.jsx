@@ -46,16 +46,18 @@ const PostContent = styled.div`
   color: ${palette.gray[8]};
 `;
 
-const PostViewer = () => {
+const PostViewer = ({post, error, loading, actionButtons}) => {
   return (
     <>
       <PostViewerBlock>
         <PostHead>
-          <h1>제목</h1>
-          <SubInfo>
-            <span>
-              <b>tester</b>
-            </span>
+          <h1>{title}</h1>
+          <SubInfo
+            username={user.username}
+            publishedDate={publishedDate}
+            hasMarginTop
+          >
+            
             <span>{new Date().toLocaleDateString()}</span>
           </SubInfo>
           <Tags>

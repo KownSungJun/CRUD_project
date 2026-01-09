@@ -45,12 +45,7 @@ const Footer = styled.div`
 
 const RegisterForm = () => {
   const navigate = useNavigate();
-  const [form, setForm] = useState({
-    userId: 'test01',
-    userName: 'test',
-    password: 'asdfasdf',
-    passwordConfirm: 'asdfasdf',
-  });
+  const [form, setForm] = useState([]);
 
   const { userId, userName, password, passwordConfirm } = form;
 

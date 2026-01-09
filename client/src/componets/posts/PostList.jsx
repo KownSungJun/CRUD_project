@@ -7,6 +7,7 @@ import Tags from '../common/Tags';
 import { getPosts } from '../../api/posts';
 import { useEffect, useState } from 'react';
 import * as postAPI from '../../api/posts';
+import { Link } from 'react-router-dom';
 const PostListBlock = styled(Responsive)`
   margin-top: 3rem;
 `;
@@ -65,14 +66,16 @@ const PostItemBlock = styled.div`
 // `
 
 const PostItem = ({ post }) => {
-  console.log(post);
+  // console.log(post);
   return (
     <>
       <PostItemBlock>
-        <h2>{post.title}</h2>
-        <h3>{post.userName}</h3>
-        <SubInfo username={post.user?.username} publishedDate={new Date(post.createdAt)} />
-        {post.tags && <Tags tags={posts.tags} />}
+        <h2>
+          <Link to={`/@${post.authorId}/${post.id}`}>{post.title}</Link>
+          </h2>
+        <h3>{post.authorId}</h3>
+        <SubInfo authorId={post.user?.authorId} publishedDate={new Date(post.createdAt)} />
+        {post.tags && <Tags tags={post.tags} />}
         <p>{post.content.slice(0, 100)}...</p>
       </PostItemBlock>
     </>
@@ -87,7 +90,7 @@ const PostList = () => {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const res = await getPosts({ page: 1, limit: 10 });
+        const res = await getPosts({ page: 1, limit: 50 });
         console.log('posts response:', res.data);
         setPosts(res.data.items); // ← 응답 구조에 맞게
       } catch (e) {

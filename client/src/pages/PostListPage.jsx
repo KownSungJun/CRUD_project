@@ -6,7 +6,6 @@ import HeaderContainer from '../containers/HeaderContainer';
 const PostListPage = () => {
   return (
     <>
-      <HeaderContainer />
       <PostList />
     </>
   );
