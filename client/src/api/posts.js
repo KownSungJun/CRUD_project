@@ -1,6 +1,6 @@
 import client from './client';
 
-export const getPosts = ({ page = 1, limit = 10 }) =>
+export const getAllPosts = ({ page = 1, limit = 10 }) =>
   client.get('/posts', {
     params: { page, limit },
   });
@@ -10,3 +10,6 @@ export const writePost = ({ title, content }) =>
     title,
     content,
   });
+
+export const getPost = (postId) =>
+  client.get(`/posts/${postId}`);

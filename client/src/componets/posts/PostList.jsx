@@ -4,7 +4,7 @@ import Button from '../common/Button';
 import palette from '../../lib/styles/palette';
 import SubInfo from '../common/SubInfo';
 import Tags from '../common/Tags';
-import { getPosts } from '../../api/posts';
+import { getAllPosts } from '../../api/posts';
 import { useEffect, useState } from 'react';
 import * as postAPI from '../../api/posts';
 import { Link } from 'react-router-dom';
@@ -41,42 +41,17 @@ const PostItemBlock = styled.div`
   }
 `;
 
-// const SubInto = styled.div`
-//     color: ${palette.gray[6]};
-
-//     span + span:before {
-//         color: ${palette.gray[4]};
-//         padding-left: 0.25rem;
-//         padding-right: 0.25rem;
-//         content: '\\B7';
-//     }
-// `
-
-// const Tags = styled.div`
-//     margin-top: 0.5rem;
-//     .tag {
-//         display: inline-block;
-//         color: ${palatte.cyan[7]};
-//         text-decoration: none;
-//         margin-right: 0.rem;
-//         &:hover {
-//             color: ${palatte.cyan[6]};
-//         }
-//     }
-// `
-
 const PostItem = ({ post }) => {
   // console.log(post);
   return (
     <>
       <PostItemBlock>
         <h2>
-          <Link to={`/@${post.authorId}/${post.id}`}>{post.title}</Link>
+          <Link to={`/posts/${post.id}`}>{post.title}</Link>
           </h2>
-        <h3>{post.authorId}</h3>
-        <SubInfo authorId={post.user?.authorId} publishedDate={new Date(post.createdAt)} />
+        <SubInfo username={post.authorId} publishedDate={new Date(post.createdAt)} />
         {post.tags && <Tags tags={post.tags} />}
-        <p>{post.content.slice(0, 100)}...</p>
+        <p dangerouslySetInnerHTML={{ __html: `${post.content.slice(0, 100)}`}}></p>
       </PostItemBlock>
     </>
   );
@@ -90,7 +65,7 @@ const PostList = () => {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const res = await getPosts({ page: 1, limit: 50 });
+        const res = await getAllPosts({ page: 1, limit: 50 });
         console.log('posts response:', res.data);
         setPosts(res.data.items); // ← 응답 구조에 맞게
       } catch (e) {

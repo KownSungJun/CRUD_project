@@ -48,6 +48,7 @@ const UserInfo = styled.div`
 const Header = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
+  
   return (
     <>
       <HeaderBlock>
@@ -61,7 +62,7 @@ const Header = () => {
               <Button to="/write">글 쓰기</Button>
               
               <Button to={`/@${user.userId}`}>글 관리</Button>
-              <Button to={`/@${user.userId}`}>내 정보</Button>
+              <Button to={`/users/${user.userId}`}>내 정보</Button>
               <Button onClick={() => dispatch(logout())}>로그아웃</Button>
             </div>
           ) : (

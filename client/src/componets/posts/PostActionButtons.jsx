@@ -3,7 +3,7 @@ import palette from '../../lib/styles/palette'
 
 const PostActionButtonsBlock = styled.div`
     display: flex;
-    justify-content: flex;
+    justify-content: flex-end;
     margin-bottom: 2rem;
     margin-top: -1.5rem;
 `
