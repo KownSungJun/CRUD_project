@@ -17,8 +17,6 @@ const PostHead = styled.div`
   }
 `;
 
-
-
 const Tags = styled.div`
   margin-top: 0.5rem;
   .tag {
@@ -37,16 +35,13 @@ const PostContent = styled.div`
   color: ${palette.gray[8]};
 `;
 
-const PostViewer = ({post, error, loading, actionButtons}) => {
+const PostViewer = ({ post, error, loading, actionButtons }) => {
   return (
     <>
       <PostViewerBlock>
         <PostHead>
           <h1>{post.title}</h1>
-          <SubInfo
-            username={post.authorId} publishedDate={new Date(post.createdAt)}
-          />
-
+          <SubInfo username={post.authorId} publishedDate={new Date(post.createdAt)} />
 
           <Tags>
             <div className="tag">#태그1</div>
@@ -55,7 +50,7 @@ const PostViewer = ({post, error, loading, actionButtons}) => {
           </Tags>
         </PostHead>
         {actionButtons}
-        <PostContent dangerouslySetInnerHTML={{ __html: `${post.content}`}} />
+        <PostContent dangerouslySetInnerHTML={{ __html: `${post.content}` }} />
       </PostViewerBlock>
     </>
   );

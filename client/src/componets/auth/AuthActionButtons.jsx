@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import palette from '../../lib/styles/palette';
 
-const PostActionButtonsBlock = styled.div`
+const AuthActionButtonsBlock = styled.div`
   display: flex;
   justify-content: flex-end;
   margin-bottom: 2rem;
@@ -26,13 +26,13 @@ const ActionButton = styled.button`
   }
 `;
 
-const PostActionButtons = ({ onEdit }) => {
+const AuthActionButtons = ({ onEdit }) => {
   return (
-    <PostActionButtonsBlock>
+    <AuthActionButtonsBlock>
       <ActionButton onClick={onEdit}>수정</ActionButton>
       <ActionButton>삭제</ActionButton>
-    </PostActionButtonsBlock>
+    </AuthActionButtonsBlock>
   );
 };
 
-export default PostActionButtons;
+export default AuthActionButtons;

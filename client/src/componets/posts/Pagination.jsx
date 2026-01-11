@@ -38,3 +38,5 @@ const Pagination = ({ page, lastPage, username, tag }) => {
     </>
   );
 };
+
+export default Pagination;

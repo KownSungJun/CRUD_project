@@ -1,15 +1,17 @@
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from 'react-redux'
-import { useParams } from 'react-router-dom'
-import PostViewer from "../componets/posts/PostViewer";
-import PostActionButtons from "../componets/posts/PostActionButtons";
-import { getPost } from "../api/posts";
-
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams, useNavigate } from 'react-router-dom';
+import PostViewer from '../componets/posts/PostViewer';
+import PostActionButtons from '../componets/posts/PostActionButtons';
+import { getPost } from '../api/posts';
+import { getUser } from '../api/user';
 const PostViewerContainer = () => {
   const [post, setPost] = useState([]);
+  const [user, setUser] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { postId } = useParams();
+  const navigate = useNavigate();
   useEffect(() => {
     if (!postId) return;
     const fetchPosts = async () => {
@@ -26,13 +28,34 @@ const PostViewerContainer = () => {
     };
     fetchPosts();
   }, [postId]);
-    return (
-        <PostViewer 
-            post={post}
-            loading={loading}
-            actionButtons={<PostActionButtons />}
-        />
-    )
-}
+  useEffect(() => {
+    if (!postId) return;
+    const fetchUsers = async () => {
+      try {
+        const res = await getUser(post.authorId);
+        console.log('posts response:', res.data);
+        setUser(res.data); // ← 응답 구조에 맞게
+      } catch (e) {
+        console.error(e);
+        setError('유저정보를 불러오지 못했습니다.');
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchUsers();
+  }, []);
+  const onEdit = () => {
+    navigate('/write');
+  };
+  const ownPost = (user && user.userId) === (post && post.authorId);
 
-export default PostViewerContainer
+  return (
+    <PostViewer
+      post={post}
+      loading={loading}
+      actionButtons={ownPost && <PostActionButtons onEdit={onEdit} />}
+    />
+  );
+};
+
+export default PostViewerContainer;

@@ -11,5 +11,8 @@ export const writePost = ({ title, content }) =>
     content,
   });
 
-export const getPost = (postId) =>
-  client.get(`/posts/${postId}`);
+export const getPost = (postId) => client.get(`/posts/${postId}`);
+
+export const patchPost = (postId) => client.patch(`/posts/${postId}`);
+
+export const deletePost = (postId) => client.delete(`/posts/${postId}`);

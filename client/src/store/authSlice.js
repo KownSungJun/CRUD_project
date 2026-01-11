@@ -14,7 +14,11 @@ export const login = createAsyncThunk('auth/login', async ({ userId, password },
 });
 
 export const logout = createAsyncThunk('auth/logout', async () => {
-  localStorage.removeItem('accessToken');
+  try {
+    localStorage.removeItem('accessToken');
+  } catch (e) {
+    return thunkAPI.rejectWithValue('로그아웃 실패');
+  }
 });
 const authSlice = createSlice({
   name: 'auth',

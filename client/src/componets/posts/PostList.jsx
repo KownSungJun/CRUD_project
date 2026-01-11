@@ -48,10 +48,10 @@ const PostItem = ({ post }) => {
       <PostItemBlock>
         <h2>
           <Link to={`/posts/${post.id}`}>{post.title}</Link>
-          </h2>
+        </h2>
         <SubInfo username={post.authorId} publishedDate={new Date(post.createdAt)} />
         {post.tags && <Tags tags={post.tags} />}
-        <p dangerouslySetInnerHTML={{ __html: `${post.content.slice(0, 100)}`}}></p>
+        <p dangerouslySetInnerHTML={{ __html: `${post.content.slice(0, 100)}` }}></p>
       </PostItemBlock>
     </>
   );
