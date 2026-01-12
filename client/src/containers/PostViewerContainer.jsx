@@ -3,11 +3,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
 import PostViewer from '../componets/posts/PostViewer';
 import PostActionButtons from '../componets/posts/PostActionButtons';
-import { getPost } from '../api/posts';
-import { getUser } from '../api/user';
+import { getPost, deletePost } from '../api/posts';
+
 const PostViewerContainer = () => {
   const [post, setPost] = useState([]);
-  const [user, setUser] = useState([]);
+  const loggedInUser = useSelector(state => state.auth.user)
+  const [postLoading, setPostLoading] = useState(true);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { postId } = useParams();
@@ -18,42 +19,42 @@ const PostViewerContainer = () => {
       try {
         const res = await getPost(postId);
         console.log('posts response:', res.data);
-        setPost(res.data); // ← 응답 구조에 맞게
+        setPost(res.data);
       } catch (e) {
         console.error(e);
         setError('게시글을 불러오지 못했습니다.');
       } finally {
-        setLoading(false);
+        setPostLoading(false);
       }
     };
     fetchPosts();
   }, [postId]);
-  useEffect(() => {
-    if (!postId) return;
-    const fetchUsers = async () => {
-      try {
-        const res = await getUser(post.authorId);
-        console.log('posts response:', res.data);
-        setUser(res.data); // ← 응답 구조에 맞게
-      } catch (e) {
-        console.error(e);
-        setError('유저정보를 불러오지 못했습니다.');
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchUsers();
-  }, []);
+
+
   const onEdit = () => {
     navigate('/write');
   };
-  const ownPost = (user && user.userId) === (post && post.authorId);
+  const onRemove = async () => {
+    try {
+      await deletePost(postId)
+      navigate('/')
+    } catch (e) {
+      console.log(e)
+      setError('유저를 삭제하지 못했습니다.')
+    }
+  }
 
+
+  // const ownPost = (loggedInUser?.userId) === (post && post.authorId)
+  const ownPost = (loggedInUser?.userId) === (post?.authorId)
+  // console.log(ownPost)
+  // console.log(user)
+  // console.log(post && post.authorId)
   return (
     <PostViewer
       post={post}
       loading={loading}
-      actionButtons={ownPost && <PostActionButtons onEdit={onEdit} />}
+      actionButtons={ownPost && <PostActionButtons onEdit={onEdit} onRemove={onRemove}/>}
     />
   );
 };

@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 import palette from '../../lib/styles/palette';
-
+import { useState, useCallback } from 'react';
+import AskPostRemoveModal from './AskPostRemoveModal'
+import AskModal from '../common/AskModal';
 const PostActionButtonsBlock = styled.div`
   display: flex;
   justify-content: flex-end;
@@ -26,12 +28,31 @@ const ActionButton = styled.button`
   }
 `;
 
-const PostActionButtons = ({ onEdit }) => {
+const PostActionButtons = ({ onEdit, onRemove }) => {
+  const [modal, setModal] = useState(false)
+  const onRemoveClick = () => {
+    setModal(true)
+  }
+  const onCancel = () => {
+    setModal(false)
+  }
+  const onConfirm = () => {
+    setModal(false)
+    onRemove()
+  } //만약 계정을 삭제할 경우 만약 글을 쓴게 있다면 그 글은 어떻게 할 것인가?
   return (
+    <>
     <PostActionButtonsBlock>
       <ActionButton onClick={onEdit}>수정</ActionButton>
-      <ActionButton>삭제</ActionButton>
+      <ActionButton onClick={onRemoveClick}>삭제</ActionButton>
     </PostActionButtonsBlock>
+    <AskPostRemoveModal 
+      visible={modal}
+      onConfirm={onConfirm}
+      onCancel={onCancel}
+    />
+    </>
+
   );
 };
 
